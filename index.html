@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TEIXIRAELEC</title>
+
+<style>
+body{
+font-family:Arial;
+margin:0;
+background:#f4f4f4;
+}
+
+header{
+background:black;
+color:#FFD700;
+text-align:center;
+padding:20px;
+font-size:26px;
+font-weight:bold;
+}
+
+header small{
+display:block;
+color:white;
+font-size:14px;
+margin-top:5px;
+}
+
+section{
+background:white;
+margin:15px;
+padding:20px;
+border-radius:15px;
+}
+
+button{
+background:#FFD700;
+border:none;
+padding:15px;
+margin:5px 0;
+border-radius:10px;
+font-weight:bold;
+width:100%;
+}
+
+button.green{background:#16a34a;color:white;}
+button.red{background:#dc2626;color:white;}
+button.dark{background:#111;color:white;}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin:6px 0;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+td,th{
+border:1px solid #ddd;
+padding:10px;
+}
+
+#signature{
+border:2px dashed black;
+height:150px;
+width:100%;
+}
+.hide{display:none;}
+</style>
+</head>
+
+<body>
+
+<header>
+⚡ TEIXIRAELEC
+<small>
+Électricité générale – Tarare  
+06 18 98 20 45  
+SIRET 98994083800018  
+TVA non applicable art.293B
+</small>
+</header>
+
+<section>
+
+<h2>Nouveau devis</h2>
+
+<input id="client" placeholder="Nom client">
+
+<input id="phone" placeholder="Téléphone client">
+
+<textarea id="adresse" placeholder="Adresse chantier"></textarea>
+
+<input id="desc" placeholder="Description intervention">
+
+<input id="prix" placeholder="Prix €">
+
+<button onclick="ajouter()">Ajouter prestation</button>
+
+<table id="table">
+
+<tr>
+<th>Description</th>
+<th>Prix</th>
+</tr>
+
+</table>
+
+<h2 id="total">Total : 0 €</h2>
+
+<h3>Signature client</h3>
+
+<canvas id="signature"></canvas>
+
+<button onclick="effacer()">Effacer signature</button>
+
+<button onclick="sauvegarder()" class="dark">Sauvegarder client</button>
+
+<button onclick="window.print()">Créer PDF</button>
+
+<button onclick="reset()" class="red">Nouveau devis</button>
+
+</section>
+
+<section>
+
+<h2>Clients sauvegardés</h2>
+
+<div id="clients"></div>
+
+</section>
+
+<script>
+
+let total=0;
+
+let clients=JSON.parse(localStorage.clients||"[]");
+
+function ajouter(){
+
+let desc=document.getElementById("desc").value;
+
+let prix=parseFloat(document.getElementById("prix").value);
+
+if(!desc || !prix)return;
+
+let table=document.getElementById("table");
+
+let row=table.insertRow();
+
+row.insertCell(0).innerHTML=desc;
+
+row.insertCell(1).innerHTML=prix+" €";
+
+total+=prix;
+
+document.getElementById("total").innerHTML="Total : "+total+" €";
+
+}
+
+function sauvegarder(){
+
+let nom=document.getElementById("client").value;
+
+if(!nom)return alert("Nom client obligatoire");
+
+clients.push({
+
+nom:nom,
+
+total:total,
+
+date:new Date().toLocaleDateString()
+
+});
+
+localStorage.clients=JSON.stringify(clients);
+
+afficherClients();
+
+alert("Client sauvegardé");
+
+}
+
+function afficherClients(){
+
+let html="";
+
+clients.forEach(c=>{
+
+html+=
+
+"<p>"+c.nom+" — "+c.total+" € — "+c.date+"</p>";
+
+});
+
+document.getElementById("clients").innerHTML=html;
+
+}
+
+function reset(){
+
+location.reload();
+
+}
+
+afficherClients();
+
+let canvas=document.getElementById("signature");
+
+let ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth-60;
+
+canvas.height=150;
+
+let draw=false;
+
+canvas.addEventListener("touchstart",()=>draw=true);
+
+canvas.addEventListener("touchend",()=>draw=false);
+
+canvas.addEventListener("touchmove",dessin);
+
+function dessin(e){
+
+if(!draw)return;
+
+let rect=canvas.getBoundingClientRect();
+
+ctx.lineWidth=3;
+
+ctx.lineCap="round";
+
+ctx.lineTo(
+
+e.touches[0].clientX-rect.left,
+
+e.touches[0].clientY-rect.top
+
+);
+
+ctx.stroke();
+
+ctx.beginPath();
+
+ctx.moveTo(
+
+e.touches[0].clientX-rect.left,
+
+e.touches[0].clientY-rect.top
+
+);
+
+}
+
+function effacer(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+}
+
+</script>
+
+</body>
+</html>
