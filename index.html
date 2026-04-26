@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TEIXIRAELEC</title>
+
+<style>
+body{
+font-family:Arial;
+margin:0;
+background:#f4f4f4;
+}
+
+header{
+background:black;
+color:#FFD700;
+text-align:center;
+padding:20px;
+font-size:26px;
+font-weight:bold;
+}
+
+section{
+background:white;
+margin:15px;
+padding:20px;
+border-radius:15px;
+}
+
+button{
+background:#FFD700;
+border:none;
+padding:15px;
+margin:5px;
+border-radius:10px;
+font-weight:bold;
+width:100%;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:6px 0;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+td,th{
+border:1px solid #ddd;
+padding:10px;
+}
+
+#signature{
+border:2px dashed black;
+height:150px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+⚡ TEIXIRAELEC
+<br>
+69170 Tarare — 06 18 98 20 45
+</header>
+
+<section>
+
+<h2>Nouveau devis</h2>
+
+<input placeholder="Nom client" id="client">
+
+<input placeholder="Téléphone client" id="phone">
+
+<input placeholder="Adresse chantier" id="adresse">
+
+<input placeholder="Description intervention" id="desc">
+
+<input placeholder="Prix €" id="prix">
+
+<button onclick="ajouter()">Ajouter ligne</button>
+
+<table id="table">
+<tr>
+<th>Description</th>
+<th>Prix</th>
+</tr>
+</table>
+
+<h3 id="total">Total : 0 €</h3>
+
+<h3>Signature client</h3>
+
+<canvas id="signature"></canvas>
+
+<button onclick="effacer()">Effacer signature</button>
+
+<button onclick="pdf()">Créer PDF</button>
+
+</section>
+
+<script>
+
+let total=0;
+
+function ajouter(){
+
+let desc=document.getElementById("desc").value;
+
+let prix=parseFloat(document.getElementById("prix").value);
+
+if(!desc || !prix)return;
+
+let table=document.getElementById("table");
+
+let row=table.insertRow();
+
+row.insertCell(0).innerHTML=desc;
+
+row.insertCell(1).innerHTML=prix+" €";
+
+total+=prix;
+
+document.getElementById("total").innerHTML="Total : "+total+" €";
+
+}
+
+function pdf(){
+
+window.print();
+
+}
+
+let canvas=document.getElementById("signature");
+
+let ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth-60;
+
+canvas.height=150;
+
+let draw=false;
+
+canvas.addEventListener("touchstart",()=>draw=true);
+
+canvas.addEventListener("touchend",()=>draw=false);
+
+canvas.addEventListener("touchmove",dessin);
+
+function dessin(e){
+
+if(!draw)return;
+
+let rect=canvas.getBoundingClientRect();
+
+ctx.lineWidth=3;
+
+ctx.lineCap="round";
+
+ctx.lineTo(
+
+e.touches[0].clientX-rect.left,
+
+e.touches[0].clientY-rect.top
+
+);
+
+ctx.stroke();
+
+ctx.beginPath();
+
+ctx.moveTo(
+
+e.touches[0].clientX-rect.left,
+
+e.touches[0].clientY-rect.top
+
+);
+
+}
+
+function effacer(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+}
+
+</script>
+
+</body>
+</html>
