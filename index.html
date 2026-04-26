@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>TEIXIRAELEC</title>
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5f5f5;
+margin:0;
+}
+
+header{
+background:black;
+color:#FFD700;
+padding:20px;
+text-align:center;
+font-size:26px;
+font-weight:bold;
+}
+
+section{
+background:white;
+margin:15px;
+padding:20px;
+border-radius:12px;
+}
+
+button{
+background:#FFD700;
+border:none;
+padding:12px;
+margin:5px;
+font-size:16px;
+border-radius:8px;
+}
+
+input{
+padding:10px;
+margin:5px;
+width:90%;
+}
+
+.signature{
+border:2px dashed black;
+height:120px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+⚡ TEIXIRAELEC
+</header>
+
+<section>
+
+<h2>Nouveau devis</h2>
+
+<input placeholder="Nom client">
+
+<input placeholder="Téléphone">
+
+<input placeholder="Adresse">
+
+<br>
+
+<select>
+
+<option>Recherche panne 80€</option>
+<option>Déplacement 40€</option>
+<option>Main d'oeuvre 1h 60€</option>
+<option>Installation prise simple 90€</option>
+<option>Installation prise double 120€</option>
+<option>Spot LED 70€</option>
+<option>Tableau électrique complet 750€</option>
+<option>Mise aux normes complète 3500€</option>
+
+</select>
+
+<br>
+
+<button onclick="preview()">Aperçu PDF</button>
+
+<button onclick="window.print()">Imprimer PDF</button>
+
+</section>
+
+
+<section>
+
+<h2>Signature client</h2>
+
+<div class="signature"></div>
+
+</section>
+
+
+<section>
+
+<h2>Planning chantier</h2>
+
+<input type="date">
+
+<input placeholder="Nom chantier">
+
+<button>Ajouter</button>
+
+</section>
+
+
+<section>
+
+<h2>Jours fériés France</h2>
+
+01/01 Jour de l'an<br>
+01/05 Fête du travail<br>
+08/05 Victoire 1945<br>
+14/07 Fête nationale<br>
+15/08 Assomption<br>
+01/11 Toussaint<br>
+11/11 Armistice<br>
+25/12 Noël
+
+</section>
+
+
+<section>
+
+<h2>Installer l'application</h2>
+
+<button onclick="install()">Installer sur téléphone</button>
+
+</section>
+
+
+<script>
+
+function preview(){
+alert("Aperçu PDF prêt")
+}
+
+function install(){
+alert("Menu Chrome → Ajouter à l'écran d'accueil")
+}
+
+</script>
+
+</body>
+</html>
